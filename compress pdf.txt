@@ -1,0 +1,9 @@
+gswin64c.exe -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile="D:\Téléchargements\output.pdf" "D:\Téléchargements\input.pdf"
+
+this merge files
+gswin64c.exe -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile="D:\Téléchargements\output.pdf" "D:\Téléchargements\input.pdf" "D:\Téléchargements\input.pdf"
+
+extract some pages
+gswin64c.exe -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -dFirstPage=2 -dLastPage=3 -sOutputFile="D:\Téléchargements\output.pdf" "D:\Téléchargements\input.pdf"
+
+-dAutoRotatePages=/All
