@@ -170,17 +170,13 @@ function actionFileProcess($path){
             }else{
                 display "Processing $($listInput[$i])..." "Status"
             }
-            Write-host $listInput[$i]
             $outNew=$($listInput[$i] -replace ".pdf$", "2.pdf")
-            Write-host $outNew
 
             if($global:autoRotate -eq $true){
                 $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($outNew)" "$($listInput[$i])"
             }else{
                 $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($outNew)" "$($listInput[$i])"
             }
-
-            Write-host $($listInput[$i])
             
             if($res -ne "" -and $res -ne $null){
                 display "Error while processing $($listInput[$i]): $($res)" "Error"
