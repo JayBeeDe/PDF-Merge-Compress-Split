@@ -41,4 +41,4 @@ accepts arguments (not finished yet)
 
 This script doesn't need to be run as Administrator
 > 23-12-2016 | Jean-Baptiste DELON
-[Issues](https://github.com/JayBeeDe/PDF-Split-Merge-and-Compress/issues)
+[Issues](https://github.com/JayBeeDe/PDF-Merge-Compress-Split/issues)

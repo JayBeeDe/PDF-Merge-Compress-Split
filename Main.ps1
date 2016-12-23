@@ -121,7 +121,7 @@ function getRootPath($path){
 }
 
 $global:currentLocation=Split-Path -Path $MyInvocation.MyCommand.Path
-$global:applicationName="PDF Split Merge and Compress"
+$global:applicationName="PDF Merge Compress Split"
 $global:defaultOutName="output"
 
 if($outName -eq $null -or $outName -eq ""){
