@@ -42,13 +42,13 @@ Note: Execution Policy must be ENABLED in order to get the PowerShell script run
 Please See https://msdn.microsoft.com/en-us/powershell/reference/5.1/microsoft.powershell.security/set-executionpolicy
 
 From command line, it accepts the following arguments:
--inputDirectory <string>: targeted directory or file (default: the current directory)
--mode <string>: [C/m] - compress / merge and compress
--cli <boolean>: [$true/$FALSE] - enable/disable CLI instead of GUI
--translate <boolean>: [$TRUE/$false] - enable/disable translation from english to the system menu (internet connexion required)
--recurse <boolean>: [$true/$FALSE] - If inputDirectory is a directory, wether search for file also recursively
--autoRotate <boolean>: [$TRUE/$false] - try to auto rotate pages
--outName <string>: output file when merging files (default value defined by $global:defaultOutName)
+- inputDirectory (string): targeted directory or file (default: the current directory)
+- mode (string): [C/m] - compress / merge and compress
+- cli (boolean): [$true/$FALSE] - enable/disable CLI instead of GUI
+- translate (boolean): [$TRUE/$false] - enable/disable translation from english to the system menu (internet connexion required)
+- recurse (boolean): [$true/$FALSE] - If inputDirectory is a directory, wether search for file also recursively
+- autoRotate (boolean): [$TRUE/$false] - try to auto rotate pages
+- outName (string): output file when merging files (default value defined by $global:defaultOutName)
 
 ## EXAMPLE
 
