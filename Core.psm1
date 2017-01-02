@@ -18,7 +18,8 @@ function display($msg,$type = "Information"){
             $global:progressStatus.Visible=$false
             if($type -eq "Success"){
                 $global:successLabel.Text=$msgNew
-                $global:successLabel.Visible=$true                
+                $global:successLabel.Visible=$true  
+                $global:progressBar.Visible=$false              
             }elseif($type -eq "Error"){
                 $global:errorLabel.Text=$msgNew
                 $global:errorLabel.Visible=$true
@@ -151,6 +152,7 @@ function actionFileProcess($path){
     }
 
     if($global:cli -eq $false){
+        $global:progressBar.Visible=$true
         $global:progressBar.Value=0
         $global:progressBar.Maximum=$listInput.Count
         if($global:modeRadio2.Checked -eq $true){

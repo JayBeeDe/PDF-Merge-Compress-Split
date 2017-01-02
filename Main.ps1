@@ -90,7 +90,7 @@ if($global:cli -eq $true){
     # Chargement des assemblies
     [void][System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
     [void][System.Reflection.Assembly]::LoadWithPartialName("System.Drawing")
-
+    
     # Creation de la form principale
     $global:form=New-Object Windows.Forms.Form
     $global:form.FormBorderStyle=[System.Windows.Forms.FormBorderStyle]::FixedDialog
@@ -199,7 +199,6 @@ if($global:cli -eq $true){
     $global:progressBar=New-Object System.Windows.Forms.ProgressBar
     $global:progressBar.Location=New-Object System.Drawing.Point(5,250)
     $global:progressBar.Size=New-Object System.Drawing.Size(380,22)
-    $global:progressBar.Visible=$true
     $global:progressBar.Minimum=0
     $global:progressBar.Step=1
     $global:progressBar.Style="Continuous"
