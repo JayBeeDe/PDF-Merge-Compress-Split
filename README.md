@@ -5,7 +5,7 @@
 The script aims at performing the following tasks on pdf files:
 - Only individually compress some pdf files (Compress Only) | Will replace the original file(s)!
 - Merge some pdf files into one and compress the output file (Merge and Compress)
-- Merge some pdf files into one, compress and split into several output files (Merge, Compress and Split) (NOT IMPLEMETED YET)
+- Split an input file into several output filesf from specified start and end page
 
 This powershell is a simple interface (GUI or CLI) that calls the Ghostscript software (gswin64c.exe)
 
@@ -13,10 +13,14 @@ This powershell is a simple interface (GUI or CLI) that calls the Ghostscript so
 
 - README.md
 - Main.ps1
+- Core.psm1
 - gsdll64.dll
 - gsdll64.lib
 - gswin64c.exe
 - pdf.ico
+- GUI Launcher - Debug.lnk
+- GUI Launcher.lnk
+- Screenshot.png
 
 ## LICENSE
 
@@ -49,11 +53,16 @@ From command line, it accepts the following arguments:
 - recurse (boolean): [$true/$FALSE] - If inputDirectory is a directory, wether search for file also recursively
 - autoRotate (boolean): [$TRUE/$false] - try to auto rotate pages
 - outName (string): output file when merging files (default value defined by $global:defaultOutName)
+- debug (boolean): [$true/$FALSE] - If set to $true, the console is not hidden when run in GUI mode: logs are displayed in the console
+
+![Screenshot](https://github.com/JayBeeDe/PDF-Merge-Compress-Split/raw/master/Screenshot.png)
 
 ## EXAMPLE
 
 In GUI: just double click the file or run from a PowerShell terminal:
-.\Main.ps1
+_.\Main.ps1_
+
+**Do NOT execute the following file directly: _Core.psm1_ !**
 
 In CLI, to compress each pdf file in the script's directory (script referential is from the Main.ps1 file), run:
 .\Main.ps1 -cli $true
