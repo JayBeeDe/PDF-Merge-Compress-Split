@@ -1,5 +1,12 @@
 ﻿#this page contains all the shared functions and modules
 
+function Hide-Console
+{
+    $consolePtr = [Console.Window]::GetConsoleWindow()
+    #0 hide
+    [Console.Window]::ShowWindow($consolePtr, 0)
+}
+
 function display($msg,$type = "Information"){
     if($type -eq "Error"){
         $color="Red"
@@ -12,30 +19,37 @@ function display($msg,$type = "Information"){
     $msgNew=translate $msg
     
     if($type -eq "Error" -or $type -eq "Status" -or $type -eq "Success"){
-        if($global:cli -eq $true){
+        if ($global:flagError -eq $false -or $type -ne "Success"){
             write-host $msgNew -ForegroundColor $color
-        }else{
-            $global:progressStatus.Visible=$false
-            if($type -eq "Success"){
-                $global:successLabel.Text=$msgNew
-                $global:successLabel.Visible=$true  
-                $global:progressBar.Visible=$false              
-            }elseif($type -eq "Error"){
-                $global:errorLabel.Text=$msgNew
-                $global:errorLabel.Visible=$true
-            }elseif($type -eq "Status"){
-                $global:progressStatus.Visible=$true
-                $global:progressStatus.Text="Processing $($msgNew)..."
-            }
-            $global:form.Refresh()
         }
+        $global:progressStatus.Visible=$false
+        if($type -eq "Success"){
+            if ($global:flagError -eq $false){
+                $global:successLabel.Text=$msgNew
+                $global:successLabel.Visible=$true
+                $global:progressBar.Visible=$false
+                $global:errorLabel.Visible=$false
+            }          
+        }elseif($type -eq "Error"){
+            $global:errorLabel.Text=$msgNew
+            $global:errorLabel.Visible=$true
+            $global:successLabel.Visible=$false
+            $global:progressBar.Visible=$false
+            $global:flagError=$true
+        }elseif($type -eq "Status"){
+            $global:progressStatus.Visible=$true
+            $global:successLabel.Visible=$false
+            $global:errorLabel.Visible=$false
+            $global:progressStatus.Text="Processing $($msgNew)..."
+        }
+        $global:form.Refresh()
     }else{
         write-host $msgNew -ForegroundColor $color
     }
 
     if($type -eq "Error"){
         cd $global:currentLocation
-        exit
+        #exit
     }
 }
 
@@ -83,6 +97,13 @@ function translate($text,$revert){
     }
 }
 
+function HideShowPageSelection($choice){
+    $global:textBox31.Enabled=$choice
+    $global:label31.Enabled=$choice
+    $global:textBox32.Enabled=$choice
+    $global:label32.Enabled=$choice
+}
+
 function actionFileBrowse($path){
     $path=getRootPath $path
     $fileBox=New-Object System.Windows.Forms.OpenFileDialog
@@ -116,6 +137,7 @@ function actionFileProcess($path){
         $global:errorLabel.Visible=$false
         $global:successLabel.Visible=$false
     }
+    $global:flagError=$false
 
     if(Test-Path -Path $path -PathType Any){
         $listInput=[System.Collections.ArrayList]@()
@@ -159,10 +181,14 @@ function actionFileProcess($path){
             $global:mode="m"
         }elseif($global:modeRadio1.Checked -eq $true){
             $global:mode="c"
+        }elseif($global:modeRadio3.Checked -eq $true){
+            $global:mode="s"
+            $global:splitStart=$global:textBox31.Text
+            $global:splitEnd=$global:textBox32.Text
         }
         $global:autoRotate=$global:autoRotateCheckbox.Checked
     }
-        
+
     if($global:mode -eq "c"){
         for($i=0; $i -lt $listInput.Count; $i++){
             if($global:cli -eq $true){
@@ -175,8 +201,10 @@ function actionFileProcess($path){
             $outNew=$($listInput[$i] -replace ".pdf$", "2.pdf")
 
             if($global:autoRotate -eq $true){
+                display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dAutoRotatePages=/All`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "Warning"
                 $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($outNew)" "$($listInput[$i])"
             }else{
+                display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "Warning"
                 $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($outNew)" "$($listInput[$i])"
             }
             
@@ -192,13 +220,52 @@ function actionFileProcess($path){
     }elseif($global:mode -eq "m"){
         display "Processing files..." "Status"
         if($global:autoRotate -eq $true){
+            display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dAutoRotatePages=/All`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf`" `"$($listInput -join '`" `"')`"" "Warning"
             $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput -join '`" `"')"
         }else{
+            display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf`" `"$($listInput -join '`" `"')`"" "Warning"
             $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput -join '`" `"')"
         }
 
         if($res -ne "" -and $res -ne $null){
             display "Error while processing the merge: $($res)" "Error"
+        }
+    }elseif($global:mode -eq "s"){
+        if (![Microsoft.VisualBasic.Information]::isNumeric($global:splitStart) -or ![Microsoft.VisualBasic.Information]::isNumeric($global:splitEnd)){
+            display "The start and end page must be a number!" "Error"
+        }else{
+            if ($global:splitStart -gt $global:splitEnd){
+                display "The end page must be greater than the start page!" "Error"
+            }else{
+                display "Extracting pages from file ..." "Status"
+                for($i=0; $i -lt $listInput.Count; $i++){
+                    if($global:cli -eq $true){
+                        Write-Progress -Id 0 -Activity $(translate "Processing pdf files..") `
+                        -Status "$([math]::Round(($i/($listInput.Count)*100),2)) % - $(translate "Processing '$($listInput[$i])'...")" `
+                        -PercentComplete $($i/($listInput.Count)*100)
+                    }else{
+                        display "Processing $($listInput[$i])..." "Status"
+                    }
+                    $outNew=$($listInput[$i] -replace ".pdf$", "extract.pdf")
+
+                    if($global:autoRotate -eq $true){
+                        display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dAutoRotatePages=/All`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-dFirstPage=$($global:splitStart)`" `"-dLastPage=$($global:splitEnd)`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "warning"
+                        $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-dFirstPage=$($global:splitStart)" "-dLastPage=$($global:splitEnd)" "-sOutputFile=$($outNew)" "$($listInput[$i])"
+                    }else{
+                        display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-dFirstPage=$($global:splitStart)`" `"-dLastPage=$($global:splitEnd)`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "warning"
+                        $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-dFirstPage=$($global:splitStart)" "-dLastPage=$($global:splitEnd)" "-sOutputFile=$($outNew)" "$($listInput[$i])"
+                    }
+                    
+                    if($res -ne "" -and $res -ne $null){
+                        display "Error while splitting $($listInput[$i]): $($res)" "Error"
+                    }
+
+                    if($global:cli -eq $false){
+                        $global:progressBar.Value=$i+1
+                        $global:form.Refresh()
+                    }
+                }
+            }
         }
     }
     display "The requested pdf files have been successfully processed!" "Success"
