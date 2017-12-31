@@ -54,9 +54,9 @@ From command line, it accepts the following arguments:
 - autoRotate (boolean): [$TRUE/$false] - try to auto rotate pages
 - outName (string): output file when merging files (default value defined by $global:defaultOutName)
 - debug (boolean): [$true/$FALSE] - If set to $true, the console is not hidden when run in GUI mode: logs are displayed in the console
-<p align="center">
+
 ![Screenshot](/JayBeeDe/PDF-Merge-Compress-Split/raw/master/Screenshot.png)
-</p>
+
 ## EXAMPLE
 
 In GUI: just double click the file or run from a PowerShell terminal:
