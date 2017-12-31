@@ -5,7 +5,7 @@
 The script aims at performing the following tasks on pdf files:
 - Only individually compress some pdf files (Compress Only) | Will replace the original file(s)!
 - Merge some pdf files into one and compress the output file (Merge and Compress)
-- Split an input file into several output filesf from specified start and end page
+- Extract some pages from an input file
 
 This powershell is a simple interface (GUI or CLI) that calls the Ghostscript software (gswin64c.exe)
 
@@ -54,9 +54,9 @@ From command line, it accepts the following arguments:
 - autoRotate (boolean): [$TRUE/$false] - try to auto rotate pages
 - outName (string): output file when merging files (default value defined by $global:defaultOutName)
 - debug (boolean): [$true/$FALSE] - If set to $true, the console is not hidden when run in GUI mode: logs are displayed in the console
-
-![Screenshot](https://github.com/JayBeeDe/PDF-Merge-Compress-Split/raw/master/Screenshot.png)
-
+<p align="center">
+![Screenshot](/JayBeeDe/PDF-Merge-Compress-Split/raw/master/Screenshot.png)
+</p>
 ## EXAMPLE
 
 In GUI: just double click the file or run from a PowerShell terminal:
