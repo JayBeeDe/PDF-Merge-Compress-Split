@@ -55,8 +55,7 @@ From command line, it accepts the following arguments:
 - outName (string): output file when merging files (default value defined by $global:defaultOutName)
 - debug (boolean): [$true/$FALSE] - If set to $true, the console is not hidden when run in GUI mode: logs are displayed in the console
 
-![Screenshot](https://github.com/JayBeeDe/PDF-Merge-Compress-Split/raw/master/Screenshot.png#center)
-img[src*='#center']{ float: center; }
+![Screenshot](https://github.com/JayBeeDe/PDF-Merge-Compress-Split/raw/master/Screenshot.png)
 
 ## EXAMPLE
 
