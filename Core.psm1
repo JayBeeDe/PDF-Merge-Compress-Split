@@ -189,6 +189,7 @@ function actionFileProcess($path){
         $global:autoRotate=$global:autoRotateCheckbox.Checked
     }
 
+    $exe="$($global:currentLocation)\gswin64c.exe"
     if($global:mode -eq "c"){
         for($i=0; $i -lt $listInput.Count; $i++){
             if($global:cli -eq $true){
@@ -202,10 +203,10 @@ function actionFileProcess($path){
 
             if($global:autoRotate -eq $true){
                 display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dAutoRotatePages=/All`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "Warning"
-                $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($outNew)" "$($listInput[$i])"
+                &$exe "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput[$i])" | Tee-Object -Variable res | Out-Null
             }else{
                 display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "Warning"
-                $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($outNew)" "$($listInput[$i])"
+                &$exe "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput[$i])" | Tee-Object -Variable res | Out-Null
             }
             
             if($res -ne "" -and $res -ne $null){
@@ -221,10 +222,10 @@ function actionFileProcess($path){
         display "Processing files..." "Status"
         if($global:autoRotate -eq $true){
             display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dAutoRotatePages=/All`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf`" `"$($listInput -join '`" `"')`"" "Warning"
-            $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput -join '`" `"')"
+            &$exe "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" $listInput | Tee-Object -Variable res | Out-Null
         }else{
             display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf`" `"$($listInput -join '`" `"')`"" "Warning"
-            $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput -join '`" `"')"
+            &$exe "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" $listInput | Tee-Object -Variable res | Out-Null
         }
 
         if($res -ne "" -and $res -ne $null){
@@ -250,10 +251,10 @@ function actionFileProcess($path){
 
                     if($global:autoRotate -eq $true){
                         display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dAutoRotatePages=/All`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-dFirstPage=$($global:splitStart)`" `"-dLastPage=$($global:splitEnd)`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "warning"
-                        $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-dFirstPage=$($global:splitStart)" "-dLastPage=$($global:splitEnd)" "-sOutputFile=$($outNew)" "$($listInput[$i])"
+                        &$exe "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dAutoRotatePages=/All" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-dFirstPage=$($global:splitStart)" "-dLastPage=$($global:splitEnd)" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput[$i])" | Tee-Object -Variable res | Out-Null
                     }else{
                         display "&`"$($global:currentLocation)\gswin64c.exe`" `"-sDEVICE=pdfwrite`" `"-dCompatibilityLevel=1.4`" `"-dPDFSETTINGS=/ebook`" `"-dNOPAUSE`" `"-dQUIET`" `"-dBATCH`" `"-dFirstPage=$($global:splitStart)`" `"-dLastPage=$($global:splitEnd)`" `"-sOutputFile=$($outNew)`" `"$($listInput[$i])`"" "warning"
-                        $res=&"$($global:currentLocation)\gswin64c.exe" "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-dFirstPage=$($global:splitStart)" "-dLastPage=$($global:splitEnd)" "-sOutputFile=$($outNew)" "$($listInput[$i])"
+                        &$exe "-sDEVICE=pdfwrite" "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" "-dNOPAUSE" "-dQUIET" "-dBATCH" "-dFirstPage=$($global:splitStart)" "-dLastPage=$($global:splitEnd)" "-sOutputFile=$($global:currentLocation)\$($global:outName)$($i).pdf" "$($listInput[$i])" | Tee-Object -Variable res | Out-Null
                     }
                     
                     if($res -ne "" -and $res -ne $null){
